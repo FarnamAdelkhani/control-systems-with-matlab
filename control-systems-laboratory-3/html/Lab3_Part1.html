@@ -1,0 +1,269 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Lab3_Part1</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-10-02"><meta name="DC.source" content="Lab3_Part1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">% Lab 3</span>
+
+s = tf(<span class="string">'s'</span>)
+Gp = 3 * 100 * (s + 1) / (3*s + 1) / (s^2 + 10*s + 100)
+Kc = [0.2, 0.5, 1, 10]
+
+figure(1)
+hold
+<span class="keyword">for</span> n = 1:4
+step(Kc(n) * Gp, 0:.0001:2)<span class="comment">% Plot the step response; end time = 2 sec</span>
+legend(<span class="string">'K_c = 0.2'</span>, <span class="string">'K_c = 0.5'</span>, <span class="string">'K_c = 1'</span>, <span class="string">'K_c = 10'</span>)
+    title(<span class="string">'Step Response'</span>);
+    xlabel(<span class="string">'Time (secs)'</span>);
+    ylabel(<span class="string">'Amplitude'</span>);
+[Y,T] = step(Kc(n) * Gp,0:.0001:2); <span class="comment">% Simulation resolution is 0.0001 sec.</span>
+stepinfo(Y,T) <span class="comment">% takes step response data (T,Y)</span>
+<span class="keyword">end</span>
+hold
+
+    <span class="comment">% Closed Loop</span>
+figure(2)
+hold
+<span class="keyword">for</span> n = 1:4
+step(feedback(Kc(n) * Gp, 1),0:.0001:1) <span class="comment">% Plot the step response</span>
+    title(<span class="string">'Step Response'</span>);
+    xlabel(<span class="string">'Time (secs)'</span>);
+    ylabel(<span class="string">'Amplitude'</span>);
+legend(<span class="string">'K_c = 0.2'</span>, <span class="string">'K_c = 0.5'</span>, <span class="string">'K_c = 1'</span>, <span class="string">'K_c = 10'</span>)
+[Y,T] = step(feedback(Kc(n) * Gp, 1),0:.0001:20);
+                    <span class="comment">% Generate data used by ?stepinfo? command</span>
+stepinfo(Y,T)
+<span class="keyword">end</span>
+hold
+
+<span class="comment">% You may also explore settlingtime(Y,T,5); type h</span>
+</pre><pre class="codeoutput">
+s =
+ 
+  s
+ 
+Continuous-time transfer function.
+
+
+Gp =
+ 
+          300 s + 300
+  ----------------------------
+  3 s^3 + 31 s^2 + 310 s + 100
+ 
+Continuous-time transfer function.
+
+
+Kc =
+
+    0.2000    0.5000    1.0000   10.0000
+
+Current plot held
+Warning: Ignoring extra legend entries. 
+
+ans = 
+
+        RiseTime: 1.4277
+    SettlingTime: 1.8921
+     SettlingMin: 0.3490
+     SettlingMax: 0.3878
+       Overshoot: 0
+      Undershoot: 0
+            Peak: 0.3878
+        PeakTime: 2
+
+Warning: Ignoring extra legend entries. 
+
+ans = 
+
+        RiseTime: 1.4277
+    SettlingTime: 1.8921
+     SettlingMin: 0.8726
+     SettlingMax: 0.9695
+       Overshoot: 0
+      Undershoot: 0
+            Peak: 0.9695
+        PeakTime: 2
+
+Warning: Ignoring extra legend entries. 
+
+ans = 
+
+        RiseTime: 1.4277
+    SettlingTime: 1.8921
+     SettlingMin: 1.7451
+     SettlingMax: 1.9390
+       Overshoot: 0
+      Undershoot: 0
+            Peak: 1.9390
+        PeakTime: 2
+
+
+ans = 
+
+        RiseTime: 1.4277
+    SettlingTime: 1.8921
+     SettlingMin: 17.4514
+     SettlingMax: 19.3900
+       Overshoot: 0
+      Undershoot: 0
+            Peak: 19.3900
+        PeakTime: 2
+
+Current plot released
+Current plot held
+Warning: Ignoring extra legend entries. 
+
+ans = 
+
+        RiseTime: 3.8164
+    SettlingTime: 7.4673
+     SettlingMin: 0.3375
+     SettlingMax: 0.3750
+       Overshoot: 0
+      Undershoot: 0
+            Peak: 0.3750
+        PeakTime: 20
+
+Warning: Ignoring extra legend entries. 
+
+ans = 
+
+        RiseTime: 2.6224
+    SettlingTime: 5.5310
+     SettlingMin: 0.5400
+     SettlingMax: 0.6000
+       Overshoot: 0
+      Undershoot: 0
+            Peak: 0.6000
+        PeakTime: 20
+
+Warning: Ignoring extra legend entries. 
+
+ans = 
+
+        RiseTime: 0.1671
+    SettlingTime: 4.1498
+     SettlingMin: 0.5188
+     SettlingMax: 0.7500
+       Overshoot: 0
+      Undershoot: 0
+            Peak: 0.7500
+        PeakTime: 20
+
+
+ans = 
+
+        RiseTime: 0.0361
+    SettlingTime: 1.1887
+     SettlingMin: 0.5513
+     SettlingMax: 1.5001
+       Overshoot: 55.0140
+      Undershoot: 0
+            Peak: 1.5001
+        PeakTime: 0.0961
+
+Current plot released
+</pre><img vspace="5" hspace="5" src="Lab3_Part1_01.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="Lab3_Part1_02.png" style="width:560px;height:420px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% Lab 3 
+
+s = tf('s')
+Gp = 3 * 100 * (s + 1) / (3*s + 1) / (s^2 + 10*s + 100)
+Kc = [0.2, 0.5, 1, 10]
+
+figure(1)
+hold
+for n = 1:4
+step(Kc(n) * Gp, 0:.0001:2)% Plot the step response; end time = 2 sec
+legend('K_c = 0.2', 'K_c = 0.5', 'K_c = 1', 'K_c = 10')
+    title('Step Response');
+    xlabel('Time (secs)');
+    ylabel('Amplitude');
+[Y,T] = step(Kc(n) * Gp,0:.0001:2); % Simulation resolution is 0.0001 sec.
+stepinfo(Y,T) % takes step response data (T,Y)
+end
+hold
+
+    % Closed Loop
+figure(2)
+hold
+for n = 1:4
+step(feedback(Kc(n) * Gp, 1),0:.0001:1) % Plot the step response
+    title('Step Response');
+    xlabel('Time (secs)');
+    ylabel('Amplitude');
+legend('K_c = 0.2', 'K_c = 0.5', 'K_c = 1', 'K_c = 10')
+[Y,T] = step(feedback(Kc(n) * Gp, 1),0:.0001:20); 
+                    % Generate data used by ?stepinfo? command
+stepinfo(Y,T)
+end
+hold
+
+% You may also explore settlingtime(Y,T,5); type h
+##### SOURCE END #####
+--></body></html>

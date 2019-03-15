@@ -1,0 +1,444 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Lab4</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-10-04"><meta name="DC.source" content="Lab4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">% LAB 4 Code</span>
+<span class="comment">% Farnam Adelkhani (915815724)</span>
+
+clear; <span class="comment">% Clear all variables.</span>
+Kp = 3;
+tau = 3;
+zeta = 0.5;
+wn = 10;
+Kc = [.2; .5; 1; 10]
+
+s = tf(<span class="string">'s'</span>)
+Gp = Kp * wn^2 * (s + 1) / (tau *s +1) / (s^2 + 2* zeta * wn *s +wn^2)
+
+<span class="comment">% ******* OPEN LOOP Case *******</span>
+figure
+hold <span class="comment">% Hold plotting.</span>
+<span class="keyword">for</span> n = 1:4
+Gs = Gp * Kc(n);
+bode(Gs); <span class="comment">% Draw Bode plots.</span>
+disp([<span class="string">'********** Open Loop Kc = '</span>, num2str(Kc(n)), <span class="string">' **********'</span>])
+
+BW = bandwidth(Gs) <span class="comment">%bandwidth</span>
+DCGain = dcgain(Gs) <span class="comment">%dcgain</span>
+DCGaindB = 20 * log10(DCGain) <span class="comment">% Convert to dB, log10=log</span>
+[MaxGain, MaxFreq] = getPeakGain(Gs) <span class="comment">%getPeakGain</span>
+MaxGaindB = 20 * log10(MaxGain) <span class="comment">% Gain is not in dB; convert to dB.</span>
+<span class="keyword">end</span>
+hold <span class="comment">% Release the plots.</span>
+
+title(<span class="string">'Open Loop Case'</span>)
+legend(<span class="string">'Kc = 0.2'</span>, <span class="string">'Kc = 0.5'</span>, <span class="string">'Kc = 1'</span>, <span class="string">'Kc = 10'</span>, <span class="string">'location'</span>, <span class="string">'northeast'</span>)
+
+<span class="comment">% ******* CLOSED LOOP *******</span>
+figure
+hold
+<span class="keyword">for</span> n = 1:4
+Gs = feedback(Gp * Kc(n), 1);
+bode(Gs)
+disp([<span class="string">'********** Closed Loop Kc = '</span>, num2str(Kc(n)), <span class="string">' **********'</span>])
+BW = bandwidth(Gs)
+DCGain = dcgain(Gs)
+DCGaindB = 20 * log10(DCGain)
+[MaxGain, MaxFreq] = getPeakGain(Gs)
+MaxGaindB = 20 * log10(MaxGain)
+<span class="keyword">end</span>
+hold
+title(<span class="string">'Closed Loop Case'</span>)
+legend(<span class="string">'Kc = 0.2'</span>, <span class="string">'Kc = 0.5'</span>, <span class="string">'Kc = 1'</span>, <span class="string">'Kc = 10'</span>, <span class="string">'location'</span>, <span class="string">'northeast'</span>)
+</pre><pre class="codeoutput">
+Kc =
+
+    0.2000
+    0.5000
+    1.0000
+   10.0000
+
+
+s =
+ 
+  s
+ 
+Continuous-time transfer function.
+
+
+Gp =
+ 
+          300 s + 300
+  ----------------------------
+  3 s^3 + 31 s^2 + 310 s + 100
+ 
+Continuous-time transfer function.
+
+Current plot held
+********** Open Loop Kc = 0.2 **********
+
+BW =
+
+    0.3776
+
+
+DCGain =
+
+    0.6000
+
+
+DCGaindB =
+
+   -4.4370
+
+
+MaxGain =
+
+    0.6000
+
+
+MaxFreq =
+
+     0
+
+
+MaxGaindB =
+
+   -4.4370
+
+********** Open Loop Kc = 0.5 **********
+
+BW =
+
+    0.3776
+
+
+DCGain =
+
+    1.5000
+
+
+DCGaindB =
+
+    3.5218
+
+
+MaxGain =
+
+    1.5000
+
+
+MaxFreq =
+
+     0
+
+
+MaxGaindB =
+
+    3.5218
+
+********** Open Loop Kc = 1 **********
+
+BW =
+
+    0.3776
+
+
+DCGain =
+
+     3
+
+
+DCGaindB =
+
+    9.5424
+
+
+MaxGain =
+
+     3
+
+
+MaxFreq =
+
+     0
+
+
+MaxGaindB =
+
+    9.5424
+
+********** Open Loop Kc = 10 **********
+
+BW =
+
+    0.3776
+
+
+DCGain =
+
+    30
+
+
+DCGaindB =
+
+   29.5424
+
+
+MaxGain =
+
+    30
+
+
+MaxFreq =
+
+     0
+
+
+MaxGaindB =
+
+   29.5424
+
+Current plot released
+Current plot held
+********** Closed Loop Kc = 0.2 **********
+
+BW =
+
+    0.5810
+
+
+DCGain =
+
+    0.3750
+
+
+DCGaindB =
+
+   -8.5194
+
+
+MaxGain =
+
+    0.3750
+
+
+MaxFreq =
+
+     0
+
+
+MaxGaindB =
+
+   -8.5194
+
+********** Closed Loop Kc = 0.5 **********
+
+BW =
+
+    0.9440
+
+
+DCGain =
+
+    0.6000
+
+
+DCGaindB =
+
+   -4.4370
+
+
+MaxGain =
+
+    0.6000
+
+
+MaxFreq =
+
+     0
+
+
+MaxGaindB =
+
+   -4.4370
+
+********** Closed Loop Kc = 1 **********
+
+BW =
+
+   17.0096
+
+
+DCGain =
+
+    0.7500
+
+
+DCGaindB =
+
+   -2.4988
+
+
+MaxGain =
+
+    0.7872
+
+
+MaxFreq =
+
+   12.0618
+
+
+MaxGaindB =
+
+   -2.0781
+
+********** Closed Loop Kc = 10 **********
+
+BW =
+
+   49.7724
+
+
+DCGain =
+
+    0.9677
+
+
+DCGaindB =
+
+   -0.2848
+
+
+MaxGain =
+
+    3.2524
+
+
+MaxFreq =
+
+   32.4093
+
+
+MaxGaindB =
+
+   10.2442
+
+Current plot released
+</pre><img vspace="5" hspace="5" src="Lab4_01.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="Lab4_02.png" style="width:560px;height:420px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% LAB 4 Code
+% Farnam Adelkhani (915815724)
+
+clear; % Clear all variables.
+Kp = 3; 
+tau = 3; 
+zeta = 0.5; 
+wn = 10;
+Kc = [.2; .5; 1; 10]
+
+s = tf('s')
+Gp = Kp * wn^2 * (s + 1) / (tau *s +1) / (s^2 + 2* zeta * wn *s +wn^2)
+
+% ******* OPEN LOOP Case *******
+figure
+hold % Hold plotting.
+for n = 1:4
+Gs = Gp * Kc(n);
+bode(Gs); % Draw Bode plots.
+disp(['********** Open Loop Kc = ', num2str(Kc(n)), ' **********'])
+
+BW = bandwidth(Gs) %bandwidth
+DCGain = dcgain(Gs) %dcgain
+DCGaindB = 20 * log10(DCGain) % Convert to dB, log10=log
+[MaxGain, MaxFreq] = getPeakGain(Gs) %getPeakGain
+MaxGaindB = 20 * log10(MaxGain) % Gain is not in dB; convert to dB.
+end
+hold % Release the plots.
+
+title('Open Loop Case')
+legend('Kc = 0.2', 'Kc = 0.5', 'Kc = 1', 'Kc = 10', 'location', 'northeast')
+
+% ******* CLOSED LOOP *******
+figure
+hold
+for n = 1:4
+Gs = feedback(Gp * Kc(n), 1);
+bode(Gs)
+disp(['********** Closed Loop Kc = ', num2str(Kc(n)), ' **********'])
+BW = bandwidth(Gs)
+DCGain = dcgain(Gs)
+DCGaindB = 20 * log10(DCGain)
+[MaxGain, MaxFreq] = getPeakGain(Gs)
+MaxGaindB = 20 * log10(MaxGain)
+end
+hold
+title('Closed Loop Case')
+legend('Kc = 0.2', 'Kc = 0.5', 'Kc = 1', 'Kc = 10', 'location', 'northeast')
+##### SOURCE END #####
+--></body></html>
