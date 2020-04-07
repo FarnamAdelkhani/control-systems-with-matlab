@@ -1,7 +1,13 @@
-# control-systems--matlab
+### Control Systems with MATLAB
 
-- Students would be familiarized with system simulation concept and its place in design process. 
-- Students would become reasonably well versed in the use of Simulink software. 
-- Students would become familiar with the concept of interfacing. 
-- Students would practice report writing and technical communications. 
-- Students would learn how to use other components of MATLAB including Control Systems Toolbox for controller design. 
+Farnam Adelkhani - Course taken in 2016.
+
+- GOALS
+
+  - Become familiarized with the system simulation concept and its place in design process. 
+  - Gain reasonably well versed experience in the use of Simulink software. 
+  - Understand the concepts of interfacing. 
+  - Practice report writing and technical communications. 
+  - How to use other components of MATLAB, including the **Control Systems Toolbox for controller design**. 
+
+  
